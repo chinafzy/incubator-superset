@@ -30,16 +30,17 @@ def load_flights(only_metadata: bool = False, force: bool = False) -> None:
     table_exists = database.has_table_by_name(tbl_name)
 
     if not only_metadata and (not table_exists or force):
-        data = get_example_data("flight_data.csv.gz", make_bytes=True)
+        data = get_example_data("flight_data.csv", make_bytes=False)
         pdf = pd.read_csv(data, encoding="latin-1")
 
         # Loading airports info to join and get lat/long
-        airports_bytes = get_example_data("airports.csv.gz", make_bytes=True)
+        airports_bytes = get_example_data("airports.csv", make_bytes=False)
         airports = pd.read_csv(airports_bytes, encoding="latin-1")
         airports = airports.set_index("IATA_CODE")
 
         pdf["ds"] = (
-            pdf.YEAR.map(str) + "-0" + pdf.MONTH.map(str) + "-0" + pdf.DAY.map(str)
+            pdf.YEAR.map(str) + "-0" + pdf.MONTH.map(str) +
+            "-0" + pdf.DAY.map(str)
         )
         pdf.ds = pd.to_datetime(pdf.ds)
         del pdf["YEAR"]

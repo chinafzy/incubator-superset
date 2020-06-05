@@ -20,7 +20,7 @@ import os
 import zlib
 from io import BytesIO
 from typing import Any, Dict, List, Set
-from urllib import request
+# from urllib import request
 
 from superset import app, db
 from superset.connectors.connector_registry import ConnectorRegistry
@@ -38,7 +38,8 @@ config = app.config
 
 EXAMPLES_FOLDER = os.path.join(config["BASE_DIR"], "examples")
 
-misc_dash_slices: Set[str] = set()  # slices assembled in a 'Misc Chart' dashboard
+# slices assembled in a 'Misc Chart' dashboard
+misc_dash_slices: Set[str] = set()
 
 
 def update_slice_ids(layout_dict: Dict[Any, Any], slices: List[Slice]) -> None:
@@ -68,10 +69,12 @@ def get_slice_json(defaults: Dict[Any, Any], **kwargs: Any) -> str:
 
 
 def get_example_data(
-    filepath: str, is_gzip: bool = True, make_bytes: bool = False
+    filepath: str, make_bytes: bool = False
 ) -> BytesIO:
-    content = request.urlopen(f"{BASE_URL}{filepath}?raw=true").read()
-    if is_gzip:
+    print(f"{EXAMPLES_FOLDER}/examples-data/{filepath}")
+    # content = request.urlopen(f"{BASE_URL}{filepath}?raw=true").read()
+    content = open(f"{EXAMPLES_FOLDER}/../examples-data/{filepath}")
+    if filepath.endswith(".gz"):
         content = zlib.decompress(content, zlib.MAX_WBITS | 16)
     if make_bytes:
         content = BytesIO(content)

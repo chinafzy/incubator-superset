@@ -59,3 +59,5 @@ fi
 echo_step "4" "Starting" "Setting up roles and perms"
 superset init
 echo_step "4" "Complete" "Setting up roles and perms"
+
+tail -f /dev/null

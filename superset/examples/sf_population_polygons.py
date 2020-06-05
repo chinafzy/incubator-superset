@@ -33,7 +33,7 @@ def load_sf_population_polygons(
     table_exists = database.has_table_by_name(tbl_name)
 
     if not only_metadata and (not table_exists or force):
-        data = get_example_data("sf_population.json.gz")
+        data = get_example_data("sf_population.json")
         df = pd.read_json(data)
         df["contour"] = df.contour.map(json.dumps)
 

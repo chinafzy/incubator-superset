@@ -42,7 +42,7 @@ def load_multiformat_time_series(
     table_exists = database.has_table_by_name(tbl_name)
 
     if not only_metadata and (not table_exists or force):
-        data = get_example_data("multiformat_time_series.json.gz")
+        data = get_example_data("multiformat_time_series.json")
         pdf = pd.read_json(data)
 
         pdf.ds = pd.to_datetime(pdf.ds, unit="s")

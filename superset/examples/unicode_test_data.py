@@ -44,7 +44,7 @@ def load_unicode_test_data(only_metadata: bool = False, force: bool = False) -> 
 
     if not only_metadata and (not table_exists or force):
         data = get_example_data(
-            "unicode_utf8_unixnl_test.csv", is_gzip=False, make_bytes=True
+            "unicode_utf8_unixnl_test.csv", make_bytes=False
         )
         df = pd.read_csv(data, encoding="utf-8")
         # generate date/numeric data

@@ -42,7 +42,7 @@ def load_country_map_data(only_metadata: bool = False, force: bool = False) -> N
 
     if not only_metadata and (not table_exists or force):
         csv_bytes = get_example_data(
-            "birth_france_data_for_country_map.csv", is_gzip=False, make_bytes=True
+            "birth_france_data_for_country_map.csv", make_bytes=False
         )
         data = pd.read_csv(csv_bytes, encoding="utf-8")
         data["dttm"] = datetime.datetime.now().date()
@@ -80,7 +80,8 @@ def load_country_map_data(only_metadata: bool = False, force: bool = False) -> N
     obj.database = database
     if not any(col.metric_name == "avg__2004" for col in obj.metrics):
         col = str(column("2004").compile(db.engine))
-        obj.metrics.append(SqlMetric(metric_name="avg__2004", expression=f"AVG({col})"))
+        obj.metrics.append(
+            SqlMetric(metric_name="avg__2004", expression=f"AVG({col})"))
     db.session.merge(obj)
     db.session.commit()
     obj.fetch_metadata()

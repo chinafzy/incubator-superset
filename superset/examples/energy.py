@@ -36,14 +36,15 @@ def load_energy(only_metadata: bool = False, force: bool = False) -> None:
     table_exists = database.has_table_by_name(tbl_name)
 
     if not only_metadata and (not table_exists or force):
-        data = get_example_data("energy.json.gz")
+        data = get_example_data("energy.json")
         pdf = pd.read_json(data)
         pdf.to_sql(
             tbl_name,
             database.get_sqla_engine(),
             if_exists="replace",
             chunksize=500,
-            dtype={"source": String(255), "target": String(255), "value": Float()},
+            dtype={"source": String(255), "target": String(
+                255), "value": Float()},
             index=False,
         )
 

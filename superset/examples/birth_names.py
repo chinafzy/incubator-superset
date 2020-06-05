@@ -53,7 +53,7 @@ def gen_filter(
 
 
 def load_data(tbl_name: str, database: Database) -> None:
-    pdf = pd.read_json(get_example_data("birth_names.json.gz"))
+    pdf = pd.read_json(get_example_data("birth_names.json"))
     pdf.ds = pd.to_datetime(pdf.ds, unit="ms")
     pdf.to_sql(
         tbl_name,
@@ -103,7 +103,8 @@ def load_birth_names(only_metadata: bool = False, force: bool = False) -> None:
 
     if not any(col.metric_name == "sum__num" for col in obj.metrics):
         col = str(column("num").compile(db.engine))
-        obj.metrics.append(SqlMetric(metric_name="sum__num", expression=f"SUM({col})"))
+        obj.metrics.append(
+            SqlMetric(metric_name="sum__num", expression=f"SUM({col})"))
 
     db.session.commit()
     obj.fetch_metadata()

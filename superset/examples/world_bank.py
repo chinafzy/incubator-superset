@@ -50,7 +50,7 @@ def load_world_bank_health_n_pop(  # pylint: disable=too-many-locals
     table_exists = database.has_table_by_name(tbl_name)
 
     if not only_metadata and (not table_exists or force):
-        data = get_example_data("countries.json.gz")
+        data = get_example_data("countries.json")
         pdf = pd.read_json(data)
         pdf.columns = [col.replace(".", "_") for col in pdf.columns]
         pdf.year = pd.to_datetime(pdf.year)
@@ -72,7 +72,8 @@ def load_world_bank_health_n_pop(  # pylint: disable=too-many-locals
     tbl = db.session.query(TBL).filter_by(table_name=tbl_name).first()
     if not tbl:
         tbl = TBL(table_name=tbl_name)
-    tbl.description = utils.readfile(os.path.join(EXAMPLES_FOLDER, "countries.md"))
+    tbl.description = utils.readfile(
+        os.path.join(EXAMPLES_FOLDER, "countries.md"))
     tbl.main_dttm_col = "year"
     tbl.database = database
     tbl.filter_select_enabled = True
@@ -325,7 +326,8 @@ def load_world_bank_health_n_pop(  # pylint: disable=too-many-locals
                 until="2011-01-01",
                 viz_type="para",
                 limit=100,
-                metrics=["sum__SP_POP_TOTL", "sum__SP_RUR_TOTL_ZS", "sum__SH_DYN_AIDS"],
+                metrics=["sum__SP_POP_TOTL",
+                         "sum__SP_RUR_TOTL_ZS", "sum__SH_DYN_AIDS"],
                 secondary_metric="sum__SP_POP_TOTL",
                 series="country_name",
             ),

@@ -41,7 +41,7 @@ def load_long_lat_data(only_metadata: bool = False, force: bool = False) -> None
     table_exists = database.has_table_by_name(tbl_name)
 
     if not only_metadata and (not table_exists or force):
-        data = get_example_data("san_francisco.csv.gz", make_bytes=True)
+        data = get_example_data("san_francisco.csv", make_bytes=False)
         pdf = pd.read_csv(data, encoding="utf-8")
         start = datetime.datetime.now().replace(
             hour=0, minute=0, second=0, microsecond=0
@@ -52,8 +52,10 @@ def load_long_lat_data(only_metadata: bool = False, force: bool = False) -> None
         ]
         pdf["occupancy"] = [random.randint(1, 6) for _ in range(len(pdf))]
         pdf["radius_miles"] = [random.uniform(1, 3) for _ in range(len(pdf))]
-        pdf["geohash"] = pdf[["LAT", "LON"]].apply(lambda x: geohash.encode(*x), axis=1)
-        pdf["delimited"] = pdf["LAT"].map(str).str.cat(pdf["LON"].map(str), sep=",")
+        pdf["geohash"] = pdf[["LAT", "LON"]].apply(
+            lambda x: geohash.encode(*x), axis=1)
+        pdf["delimited"] = pdf["LAT"].map(
+            str).str.cat(pdf["LON"].map(str), sep=",")
         pdf.to_sql(  # pylint: disable=no-member
             tbl_name,
             database.get_sqla_engine(),

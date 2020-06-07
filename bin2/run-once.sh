@@ -18,9 +18,11 @@ function run_once(){
 
   2>"$log2" bash "$1" | tee "$log1"
 
+  local ret=$?
+
   cat "$log2" >&2
 
-  return $?
+  return $ret
 }
 
 run_once $1

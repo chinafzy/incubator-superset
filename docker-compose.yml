@@ -19,11 +19,13 @@ x-superset-build: &superset-build
     NPM_BUILD_CMD: build-dev
   context: ./
   dockerfile: Dockerfile-dev
+
 x-superset-depends-on: &superset-depends-on
   - db
   - redis
-x-superset-volumes:
-  &superset-volumes # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
+
+# /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
+x-superset-volumes: &superset-volumes
   - ./docker/docker-init.sh:/app/docker-init.sh
   - ./docker/pythonpath_dev:/app/pythonpath
   - ./superset:/app/superset
@@ -73,7 +75,7 @@ services:
   superset-init:
     build: *superset-build
     container_name: superset_init
-    command: ["/app/docker-init.sh"]
+    command: ["sh", "-c", "/bin2/run-once.sh /bin2/db-init.sh"]
     env_file: docker/.env
     depends_on: *superset-depends-on
     volumes: *superset-volumes
@@ -85,8 +87,9 @@ services:
       [
         "bash",
         "-c",
-        "/bin2/run-once.sh /bin2/node-init.sh && cd /app/superset-frontend && npm install && npm run dev",
+        "/bin2/run-once.sh /bin2/node-init.sh && cd /app/superset-frontend && npm run prod",
       ]
+    restart: unless-stopped
     env_file: docker/.env
     depends_on: *superset-depends-on
     volumes: *superset-volumes
@@ -122,12 +125,12 @@ services:
       ]
     env_file: docker/.env
     environment:
-      DATABASE_HOST: localhost
+      DATABASE_HOST: superset_db
       DATABASE_DB: test
       REDIS_CELERY_DB: 2
       REDIS_RESULTS_DB: 3
-      REDIS_HOST: localhost
-    network_mode: host
+      REDIS_HOST: superset_cache
+    # network_mode: host
     depends_on: *superset-depends-on
     volumes: *superset-volumes
 

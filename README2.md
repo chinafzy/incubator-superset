@@ -18,7 +18,7 @@ $ docker-compose up -d
 
 $ docker-compose logs -f
 ```
-第一次启动会有五分钟以上的初始化，然后打开`http://localhost:8088`就可以访问，默认用户名/密码是**admin/amin**
+第一次启动会有五分钟以上的初始化，然后打开 http://localhost:8088 就可以访问，默认用户名/密码是**admin/amin**
 
 ### 停止服务
 `docker-compose stop`
@@ -60,5 +60,5 @@ $ pip install pyimpala
 驱动插件的地址在这里可查询：https://superset.incubator.apache.org/installation.html#database-dependencies
 
 安装插件过程里面需要注意俩点：
-+ 部分的插件需要操作系统安装软件支持（这些可以去插件的github主业上查看，大部分的都是https://github.com/cloudera）
++ 部分的插件需要操作系统安装软件支持（这些可以去插件的github主业上查看，大部分的都是 https://github.com/cloudera ）
 + 部分的插件安装后需要重启

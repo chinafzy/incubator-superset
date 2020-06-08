@@ -87,7 +87,7 @@ services:
       [
         "bash",
         "-c",
-        "/bin2/run-once.sh /bin2/node-init.sh && cd /app/superset-frontend && npm run prod",
+        "/bin2/run-once.sh /bin2/node-init.sh && cd /app/superset-frontend && npm run dev",
       ]
     restart: unless-stopped
     env_file: docker/.env
